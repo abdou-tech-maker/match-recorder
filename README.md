@@ -5,6 +5,8 @@
     src="https://img.shields.io/badge/fluent-design-blue?style=flat-square&color=gray&labelColor=0078D7"
   >
 </a>
+a flutter desktop application used to record interactions on footbals games with the ability to save them in a pdf file to help with the stastics 
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
