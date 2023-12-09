@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:match_recorder/screens/history.dart';
 import 'package:match_recorder/screens/home.dart';

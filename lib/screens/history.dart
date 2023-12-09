@@ -38,10 +38,10 @@ class History extends StatelessWidget {
                     });
               },
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
+                  crossAxisCount: 5,
                   crossAxisSpacing: 20.0,
                   mainAxisSpacing: 20.0,
-                  childAspectRatio: 1),
+                  childAspectRatio: 1.3),
             )));
   }
 }
