@@ -19,7 +19,7 @@ class IsarService {
     return await isar.recordModels.where().findAll();
   }
 
-  Stream<List<RecordModel>> listenToCourses() async* {
+  Stream<List<RecordModel>> listenToRecords() async* {
     final isar = await db;
     yield* isar.recordModels.where().watch(fireImmediately: true);
   }
