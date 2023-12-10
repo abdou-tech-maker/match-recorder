@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:match_recorder/models/record_model.dart';
 
+import '../helpers/recordCard.dart';
 import '../services/isar_services.dart';
 
 class History extends StatelessWidget {
@@ -11,28 +14,43 @@ class History extends StatelessWidget {
     final service = IsarService();
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: StreamBuilder<List<RecordModel>>(
-          stream: service.listenToRecords(),
-          builder: (context, snapshot) => GridView.count(
-            crossAxisCount: 2,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-            scrollDirection: Axis.horizontal,
-            children: snapshot.hasData
-                ? snapshot.data!.map((record) {
-                    return ElevatedButton(
-                      onPressed: () {
-                        //  CourseDetailPage.navigate(context, course, service);
-                      },
-                      child: Text(record.name),
+        body: Padding(
+            padding: const EdgeInsets.all(8),
+            child: StreamBuilder<List<RecordModel>>(
+                stream: service.listenToRecords(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    log(snapshot.data?.length.toString() ?? "empty records");
+
+                    return const CircularProgressIndicator();
+                  }
+                  if (snapshot.hasData && snapshot.data!.isEmpty) {
+                    log(snapshot.data!.length.toString());
+
+                    return const Center(
+                      child: Text(
+                        "You have no record yet ",
+                        style: TextStyle(fontFamily: "Almarai", fontSize: 14),
+                      ),
                     );
-                  }).toList()
-                : [],
-          ),
-        ),
-      ),
-    );
+                  }
+
+                  return GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 8,
+                      crossAxisSpacing: 8.0,
+                      mainAxisSpacing: 8.0,
+                    ),
+                    itemCount: snapshot.data?.length,
+                    itemBuilder: (context, index) {
+                      log(snapshot.data!.length.toString());
+                      return RecordCard(
+                          context: context,
+                          item: snapshot.data![index],
+                          onEdit: () async {});
+                    },
+                  );
+                })));
   }
 }
