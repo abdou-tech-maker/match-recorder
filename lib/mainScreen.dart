@@ -18,10 +18,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return NavigationView(
-      appBar: NavigationAppBar(
-          automaticallyImplyLeading: false, title: Container()),
       pane: NavigationPane(
           selected: currentIndex,
+          indicator: const StickyNavigationIndicator(),
           onChanged: (value) {
             setState(() {
               currentIndex = value;
@@ -31,15 +30,21 @@ class _MainScreenState extends State<MainScreen> {
           displayMode: PaneDisplayMode.compact,
           items: [
             PaneItem(
-                icon: const Icon(FluentIcons.home),
+                icon: const Icon(
+                  FluentIcons.home,
+                ),
                 title: const Text("Home"),
                 body: const Home()),
             PaneItem(
-                icon: const Icon(FluentIcons.history),
+                icon: const Icon(
+                  FluentIcons.history,
+                ),
                 title: const Text("History"),
                 body: const History()),
             PaneItem(
-                icon: const Icon(FluentIcons.settings),
+                icon: const Icon(
+                  FluentIcons.settings,
+                ),
                 title: const Text("Settings"),
                 body: const Settings())
           ]),
