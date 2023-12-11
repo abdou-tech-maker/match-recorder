@@ -48,8 +48,18 @@ int _recordModelEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.name.length * 3;
-  bytesCount += 3 + object.path.length * 3;
+  {
+    final value = object.name;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.path;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -71,8 +81,8 @@ RecordModel _recordModelDeserialize(
 ) {
   final object = RecordModel();
   object.id = id;
-  object.name = reader.readString(offsets[0]);
-  object.path = reader.readString(offsets[1]);
+  object.name = reader.readStringOrNull(offsets[0]);
+  object.path = reader.readStringOrNull(offsets[1]);
   return object;
 }
 
@@ -84,9 +94,9 @@ P _recordModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -238,8 +248,25 @@ extension RecordModelQueryFilter
     });
   }
 
+  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> nameIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'name',
+      ));
+    });
+  }
+
+  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition>
+      nameIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'name',
+      ));
+    });
+  }
+
   QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> nameEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -252,7 +279,7 @@ extension RecordModelQueryFilter
   }
 
   QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> nameGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -267,7 +294,7 @@ extension RecordModelQueryFilter
   }
 
   QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> nameLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -282,8 +309,8 @@ extension RecordModelQueryFilter
   }
 
   QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> nameBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -369,8 +396,25 @@ extension RecordModelQueryFilter
     });
   }
 
+  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> pathIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'path',
+      ));
+    });
+  }
+
+  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition>
+      pathIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'path',
+      ));
+    });
+  }
+
   QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> pathEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -383,7 +427,7 @@ extension RecordModelQueryFilter
   }
 
   QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> pathGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -398,7 +442,7 @@ extension RecordModelQueryFilter
   }
 
   QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> pathLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -413,8 +457,8 @@ extension RecordModelQueryFilter
   }
 
   QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> pathBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -598,13 +642,13 @@ extension RecordModelQueryProperty
     });
   }
 
-  QueryBuilder<RecordModel, String, QQueryOperations> nameProperty() {
+  QueryBuilder<RecordModel, String?, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
     });
   }
 
-  QueryBuilder<RecordModel, String, QQueryOperations> pathProperty() {
+  QueryBuilder<RecordModel, String?, QQueryOperations> pathProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'path');
     });
